@@ -62,54 +62,13 @@ public class MediaAdapter extends BaseAdapter {
             cardViewHolder = (CardViewHolder) convertView.getTag();
         }
 
-        fillCard(position);
+        cardViewHolder.fill(dataList.get(position));
+//        fillCard(position);
         return convertView;
     }
 
     private void fillCard(int position) {
         JSONObject jsonObject = dataList.get(position);
-        if(jsonObject != null) {
-            JSONObject imgObj = jsonObject.optJSONObject("images");
-            JSONObject thumbObj = imgObj.optJSONObject("fixed_height_small");
-            if(thumbObj != null) {
-                String url = thumbObj.optString("webp");
-                DraweeController controller = Fresco.newDraweeControllerBuilder()
-                        .setControllerListener(new ControllerListener<ImageInfo>() {
-                            @Override
-                            public void onSubmit(String id, Object callerContext) {
 
-                            }
-
-                            @Override
-                            public void onFinalImageSet(String id, ImageInfo imageInfo, Animatable animatable) {
-
-                            }
-
-                            @Override
-                            public void onIntermediateImageSet(String id, ImageInfo imageInfo) {
-
-                            }
-
-                            @Override
-                            public void onIntermediateImageFailed(String id, Throwable throwable) {
-
-                            }
-
-                            @Override
-                            public void onFailure(String id, Throwable throwable) {
-
-                            }
-
-                            @Override
-                            public void onRelease(String id) {
-
-                            }
-                        })
-                        .setUri(Uri.parse(url))
-                        .setAutoPlayAnimations(true)
-                        .build();
-                cardViewHolder.media.setController(controller);
-            }
-        }
     }
 }
