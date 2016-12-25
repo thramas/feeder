@@ -6,31 +6,16 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import constants.ApiKeys;
 import constants.Urls;
 import fragments.FeedFragment;
 import network.NetworkListenerCallback;
 import network.NetworkUtils;
-import okhttp3.OkHttpClient;
 
 public class MainActivity extends AppCompatActivity {
 
-    OkHttpClient client = new OkHttpClient();
-    private String giphyApiPath;
-    private SwipeFlingAdapterView mediaList;
-    private List<JSONObject> dataList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +29,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initUIElements() {
-        giphyApiPath = Urls.GIPHY_HOST + "trending?api_key=" + ApiKeys.GIPHY_API;
         fetchInitialResultsFromAPI();
     }
 
     private void fetchInitialResultsFromAPI() {
-        NetworkUtils.asyncGET(0, giphyApiPath, null, null, new NetworkListenerCallback() {
+        NetworkUtils.asyncGET(0, Urls.GIPHY_TRENDING_API, null, null, new NetworkListenerCallback() {
             @Override
             public void onNetworkRequestSuccess(int requestCode, String response) {
                 openFeedFragment(response);
