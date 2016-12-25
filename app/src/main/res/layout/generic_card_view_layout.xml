@@ -1,49 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="20dp"
+    android:background="@drawable/rounded_white">
 
-    <LinearLayout
-        android:id="@+id/top_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:orientation="horizontal">
+    <!--<LinearLayout-->
+        <!--android:id="@+id/top_bar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="4dp"-->
+        <!--android:paddingTop="4dp"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:orientation="horizontal">-->
 
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/profile_image"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="left"
-            android:layout_marginLeft="10dp" />
+        <!--<com.facebook.drawee.view.SimpleDraweeView-->
+            <!--android:id="@+id/profile_image"-->
+            <!--android:layout_width="40dp"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:layout_gravity="left"-->
+            <!--android:layout_marginLeft="10dp" />-->
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+        <!--<LinearLayout-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:orientation="vertical">-->
 
-            <TextView
-                android:id="@+id/profile_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Samarth" />
+            <!--<TextView-->
+                <!--android:id="@+id/profile_name"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Samarth" />-->
 
-            <TextView
-                android:id="@+id/time_notif"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Time" />
-        </LinearLayout>
-    </LinearLayout>
+            <!--<TextView-->
+                <!--android:id="@+id/time_notif"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Time" />-->
+        <!--</LinearLayout>-->
+    <!--</LinearLayout>-->
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/media"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:layout_below="@id/top_bar"
-        android:layout_margin="60dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp" />
+        android:layout_height="wrap_content"
+        android:minWidth="200dp"
+        android:minHeight="200dp"
+        android:padding="6dp"
+        android:layout_margin="6dp"
+        android:layout_centerInParent="true"
+        fresco:actualImageScaleType="fitXY"
+        fresco:failureImageScaleType="focusCrop"/>
 
 
 </RelativeLayout>
