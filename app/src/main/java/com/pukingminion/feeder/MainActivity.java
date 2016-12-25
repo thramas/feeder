@@ -1,6 +1,10 @@
 package com.pukingminion.feeder;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
@@ -14,6 +18,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import constants.ApiKeys;
+import constants.Urls;
+import fragments.FeedFragment;
 import network.NetworkListenerCallback;
 import network.NetworkUtils;
 import okhttp3.OkHttpClient;
@@ -30,31 +37,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        MyApplication.initContexualData(getApplicationContext(), this);
         Fresco.initialize(this);
+
         initUIElements();
     }
 
-
     private void initUIElements() {
-        mediaList = (SwipeFlingAdapterView) findViewById(R.id.media_list);
-        mediaList.setVisibility(View.GONE);
-        giphyApiPath = "http://api.giphy.com/v1/gifs/trending?api_key=dc6zaTOxFJmzC";
+        giphyApiPath = Urls.GIPHY_HOST + "trending?api_key=" + ApiKeys.GIPHY_API;
+        fetchInitialResultsFromAPI();
+    }
 
-        MyApplication.initContexualData(getApplicationContext(),this);
-//        MediaAdapter mAdapter = new MediaAdapter();
-//        mAdapter.setValues(MyApplication.mContext,dataList);
-//        mediaList.setAdapter(mAdapter);
-
+    private void fetchInitialResultsFromAPI() {
         NetworkUtils.asyncGET(0, giphyApiPath, null, null, new NetworkListenerCallback() {
             @Override
             public void onNetworkRequestSuccess(int requestCode, String response) {
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    JSONArray mArray = jsonObject.optJSONArray("data");
-                    fetchResults(mArray);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                openFeedFragment(response);
             }
 
             @Override
@@ -64,53 +62,16 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void fetchResults(JSONArray mArray) {
-        dataList = returnListFromArray(mArray);
-        final MediaAdapter mAdapter = new MediaAdapter();
-        mediaList.setVisibility(View.VISIBLE);
-        mAdapter.setValues(MyApplication.mContext,dataList);
-        if(mediaList != null) {
-            mediaList.setAdapter(mAdapter);
-            mediaList.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
-                @Override
-                public void removeFirstObjectInAdapter() {
-                    dataList.remove(0);
-                    mAdapter.notifyDataSetChanged();
-                }
-
-                @Override
-                public void onLeftCardExit(Object o) {
-
-                }
-
-                @Override
-                public void onRightCardExit(Object o) {
-
-                }
-
-                @Override
-                public void onAdapterAboutToEmpty(int i) {
-
-                }
-
-                @Override
-                public void onScroll(float v) {
-
-                }
-            });
-        }
+    private void openFeedFragment(String response) {
+        FragmentManager fragmentManager = ((FragmentActivity) this).getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        Fragment fragment = new FeedFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("response", response);
+        fragment.setArguments(bundle);
+        fragmentTransaction.replace(android.R.id.content, fragment, "fragment-tag-" + "");
+        fragmentTransaction.addToBackStack("fragment-tag-" + "").commitAllowingStateLoss();
     }
 
-    private List<JSONObject> returnListFromArray(JSONArray mArray) {
-        List<JSONObject> list = new ArrayList<>();
-        for (int i = 0; i < mArray.length(); i++) {
-            try {
-                JSONObject jsonObject = mArray.getJSONObject(i);
-                list.add(jsonObject);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        return list;
-    }
+
 }
